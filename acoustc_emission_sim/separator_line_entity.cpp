@@ -29,4 +29,5 @@ void addSeparator(std::vector<sepLineEnt>&seps, oglPt p1, oglPt p2, materialprop
 	seps[seps.size() - 1].setMaterial1(material1);
 	seps[seps.size() - 1].setMaterial2(material2);
 	seps[seps.size() - 1].setFlipNormals(flipNormals);
+	seps[seps.size() - 1].calcNormal();
 }

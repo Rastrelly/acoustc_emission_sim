@@ -42,10 +42,8 @@ int main(int argc, char **argv)
 {
 	std::thread thrGlThread(glThread, argc, argv);
 
-	separators.push_back(sepLineEnt());
-	separators[0].setP1({ 5,5 });
-	separators[0].setP2({ 2,-2 });
-	separators[0].calcNormal();
+	addSeparator(separators, { 5,5 }, { 2,-2 }, dummy_mat, dummy_mat, false);
+	addSeparator(separators, { 7,7 }, { 4,-8 }, dummy_mat, dummy_mat, true);
 
 	std::string choice = "";
 	while (true)
