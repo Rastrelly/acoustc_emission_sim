@@ -2,6 +2,7 @@
 
 void prepOrthoArea(oglPt p1, oglPt p2, float wx, float wy)
 {
+	float rp1, rp2;
 	float xc, yc;
 	if (wx > wy)
 	{

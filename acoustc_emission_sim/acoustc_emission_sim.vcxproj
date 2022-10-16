@@ -132,12 +132,14 @@
     <ClCompile Include="emitter_main.cpp" />
     <ClCompile Include="particle_entity.cpp" />
     <ClCompile Include="separator_line_entity.cpp" />
+    <ClCompile Include="simulationManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ae_openGLOps.h" />
     <ClInclude Include="emitter_entity.h" />
     <ClInclude Include="particle_entity.h" />
     <ClInclude Include="separator_line_entity.h" />
+    <ClInclude Include="simulationManager.h" />
     <ClInclude Include="world_timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -11,6 +11,12 @@
 #define CLR_GRAY { 0.5f, 0.5f, 0.5f }
 #define CLR_BLACK { 0.0f, 0.0f, 0.0f }
 
+//opengl screen setup
+struct oglScreen
+{
+	float left, right, top, bottom;
+};
+
 //colour in 3 floats
 struct oglClr
 {
