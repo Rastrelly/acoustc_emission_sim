@@ -1,9 +1,10 @@
 #pragma once
-#include <iostream>
+
 #include <vector>
 #include "ae_openGLOps.h"
-
-struct coord { double x, y; };
+#include "particle_entity.h"
+#include "separator_line_entity.h"
+#include "world_timer.h"
 
 class aPartEmitter
 {
@@ -16,4 +17,15 @@ private:
 	//gathered at current period
 	double timevar; //timer var extracted from world timer
 	oglPt p1, p2; //emitter extent
+
+	int nTwinks; //how many blocks to use to accumulate data
+
+	worldTimer * wtRef;
+	
+public:
+	aPartEmitter();
+	void setWorldTimerRef(worldTimer * ref) { wtRef = ref; };
+	bool enabled;
+	double getFreq() { return wave_freq; }
+	int getPartWave() { return part_wave; };
 };

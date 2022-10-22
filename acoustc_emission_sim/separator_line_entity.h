@@ -2,11 +2,6 @@
 
 #include <string> 
 #include <vector> 
-#include <glm/glm.hpp>  //using GLM for vectors
-#include <glm/gtx/perpendicular.hpp>
-#include <glm/gtx/transform.hpp>
-#include <glm/gtx/normal.hpp>
-#include <glm/matrix.hpp>
 #include "ae_openGLOps.h"
 
 struct materialprops
@@ -37,6 +32,12 @@ public:
 	void setFlipNormals(bool fn) { flip_normal = fn; }
 	void calcNormal();
 	void drawMyself();
+	bool isEmitter;
+
+	oglPt getP1() { return p1; };
+	oglPt getP2() { return p2; };
+
+	glm::vec2 getNormal() { return norm; };
 };
 
-void addSeparator(std::vector<sepLineEnt> &seps, oglPt p1, oglPt p2, materialprops material1, materialprops material2, bool flipNormals);
+void addSeparator(std::vector<sepLineEnt> &seps, oglPt p1, oglPt p2, materialprops material1, materialprops material2, bool flipNormals, bool isEmit);

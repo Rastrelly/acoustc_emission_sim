@@ -1,16 +1,4 @@
-#include <iostream>
-#include <chrono>
-#include <thread>
-#include <string>
-#include <atomic>
-#include <vector>
-#include <GL/freeglut.h>
-#include "emitter_entity.h"
-#include "particle_entity.h"
-#include "world_timer.h"
-#include "separator_line_entity.h"
-#include "ae_openGLOps.h"
-#include "simulationManager.h"
+#include "headerCollection.h"
 
 #define AE_WINDOW_W 800
 #define AE_WINDOW_H 600
@@ -19,9 +7,9 @@
 
 std::atomic<bool> quitstate = false; //guarantees proper
                                      //termination of renderer
+std::atomic<bool> runSim = false;
 worldTimer tmr; //worldTimer object used to track framerate
-aPartEmitter emitter_main; //emitter entity
-simulationManager simMgr(&emitter_main); //contains all simulation-related data and handles communications
+simulationManager simMgr; //contains all simulation-related data and handles communications
 //between subsystems
 
 
@@ -36,6 +24,7 @@ void cbReshape(int nw, int nh);
 void cbDisplay();
 void glThread(int argc, char **argv);
 bool handleChoice();
+void simThread();
 
 
 //implementation
@@ -45,11 +34,13 @@ int main(int argc, char **argv)
 {
 
 	simMgr.scrArea = { -10,10,-10,10 };
+	simMgr.setWorldTimerRef(&tmr);
 
 	std::thread thrGlThread(glThread, argc, argv);
+	std::thread thrSimThread(simThread);
 
-	addSeparator(simMgr.separators, { 5,5 }, { 2,-2 }, dummy_mat, dummy_mat, false);
-	addSeparator(simMgr.separators, { 7,7 }, { 4,-8 }, dummy_mat, dummy_mat, true);
+	addSeparator(simMgr.separators, { 5,5 }, { 2,-2 }, dummy_mat, dummy_mat, false, false);
+	addSeparator(simMgr.separators, { 7,7 }, { 4,-8 }, dummy_mat, dummy_mat, true, true);
 
 	std::string choice = "";
 	while (true)
@@ -58,6 +49,7 @@ int main(int argc, char **argv)
 	}
 
 	thrGlThread.join();
+	thrSimThread.join();
 
 	return 0;
 }
@@ -101,6 +93,11 @@ void cbDisplay()
 		simMgr.separators[i].drawMyself();
 	}
 
+	for (int i = 0; i < simMgr.particles.size(); i++)
+	{
+		simMgr.particles[i].drawMyself(0.1f, CIRCLE_SIDES);
+	}
+
 	glutSwapBuffers();
 }
 
@@ -131,7 +128,7 @@ bool handleChoice()
 	std::string choice;
 	bool ext=false;
 
-	std::cout << "Select action: \n1 - setup screen;\n0 - quit\n" << std::endl;
+	std::cout << "Select action: \n1 - setup screen;\n2 - run/stop sim;\n0 - quit\n" << std::endl;
 	std::cin >> choice;
 
 	//quit on quit call;
@@ -149,5 +146,30 @@ bool handleChoice()
 		std::cin >> l >> r >> b >> t;
 		simMgr.scrArea = {l, r, t, b};
 	}
+
+	//activate/deactivate sim
+	if (choice == "2")
+	{
+		if (!runSim)
+		{
+			runSim = true;
+			std::cout << "+++ SIMULATION STARTED +++\n";
+		}
+		else
+		{
+			runSim = false;
+			std::cout << "+++ SIMULATION STOPPED +++\n";
+		}
+	}
 	return ext;
+}
+
+void simThread()
+{
+	while(true)
+	{
+		tmr.callDtRecalc();
+		if (runSim)	simMgr.runSimIteration();
+		if (quitstate) break;
+	}
 }

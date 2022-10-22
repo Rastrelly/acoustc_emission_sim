@@ -1,7 +1,20 @@
 #pragma once
 
+#include <iostream>
+#include <chrono>
+#include <thread>
+#include <string>
+#include <atomic>
+#include <vector>
 #include <cmath>
 #include <GL/freeglut.h>
+
+#include <glm/glm.hpp>  //using GLM for vectors
+#include <glm/gtx/perpendicular.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtx/normal.hpp>
+#include <glm/matrix.hpp>
+
 
 #define CLR_RED { 1.0f, 0.0f, 0.0f }
 #define CLR_LIME { 0.0f, 1.0f, 0.0f }

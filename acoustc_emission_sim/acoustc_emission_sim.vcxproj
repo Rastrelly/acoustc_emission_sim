@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClInclude Include="ae_openGLOps.h" />
     <ClInclude Include="emitter_entity.h" />
+    <ClInclude Include="headerCollection.h" />
     <ClInclude Include="particle_entity.h" />
     <ClInclude Include="separator_line_entity.h" />
     <ClInclude Include="simulationManager.h" />

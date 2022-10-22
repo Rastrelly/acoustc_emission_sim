@@ -17,11 +17,19 @@ void sepLineEnt::drawMyself()
 {
 	glm::vec2 delta(p2.x - p1.x, p2.y - p1.y);
 	oglPt mid = {p1.x + delta.x/2, p1.y + delta.y/2};
-	drawLine(p1,p2,CLR_BLUE);
+	if (!isEmitter)
+	{
+		drawLine(p1, p2, CLR_BLUE);
+	}
+	else
+	{
+		drawLine(p1, p2, CLR_RED);
+	}
+
 	drawLine(mid, {mid.x+norm.x,mid.y + norm.y }, CLR_GREEN);
 }
 
-void addSeparator(std::vector<sepLineEnt>&seps, oglPt p1, oglPt p2, materialprops material1, materialprops material2, bool flipNormals)
+void addSeparator(std::vector<sepLineEnt>&seps, oglPt p1, oglPt p2, materialprops material1, materialprops material2, bool flipNormals, bool isEmit)
 {
 	seps.push_back(sepLineEnt()); //add an object to work on
 	seps[seps.size() - 1].setP1(p1);
@@ -30,4 +38,6 @@ void addSeparator(std::vector<sepLineEnt>&seps, oglPt p1, oglPt p2, materialprop
 	seps[seps.size() - 1].setMaterial2(material2);
 	seps[seps.size() - 1].setFlipNormals(flipNormals);
 	seps[seps.size() - 1].calcNormal();
+	seps[seps.size() - 1].isEmitter = isEmit;
 }
+
