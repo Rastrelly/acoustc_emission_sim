@@ -89,3 +89,9 @@ double getDist(oglPt p1, oglPt p2)
 {
 	return pow(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2), 0.5f);
 }
+
+double snellius(double c1, double c2, double cang)
+{
+	const double pi = 3.1415926f;
+	return ((c2*sin(cang * pi / 180.0f))/c1) * (180.0f / pi);
+}
