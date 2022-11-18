@@ -70,7 +70,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\CPPLIBS\glm-0.9.9.8\glm;C:\CPPLIBS\freeglut-3.2.2\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\CPPLIBS\boost_1_77_0;C:\CPPLIBS\glm-0.9.9.8\glm;C:\CPPLIBS\freeglut-3.2.2\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\CPPLIBS\freeglut-3.2.2\built\lib\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -138,6 +138,7 @@
     <ClInclude Include="ae_openGLOps.h" />
     <ClInclude Include="emitter_entity.h" />
     <ClInclude Include="headerCollection.h" />
+    <ClInclude Include="materials.h" />
     <ClInclude Include="particle_entity.h" />
     <ClInclude Include="separator_line_entity.h" />
     <ClInclude Include="simulationManager.h" />

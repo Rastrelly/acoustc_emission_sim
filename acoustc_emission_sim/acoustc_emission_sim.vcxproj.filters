@@ -56,5 +56,8 @@
     <ClInclude Include="headerCollection.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="materials.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -19,13 +19,30 @@ private:
 	oglPt p1, p2; //emitter extent
 
 	int nTwinks; //how many blocks to use to accumulate data
+	float dTwink;
+	int cTwink;
 
 	worldTimer * wtRef;
 	
 public:
 	aPartEmitter();
+	void setupEmitter(float wf, float recperiod, int partwav, int nTw);
 	void setWorldTimerRef(worldTimer * ref) { wtRef = ref; };
 	bool enabled;
 	double getFreq() { return wave_freq; }
 	int getPartWave() { return part_wave; };
+	void recData(double c_amt);
+	void refreshTimeframe(double dt);
+	void dumpData();
+	void getOldData(std::vector<double>&cvec)
+	{
+		cvec = old_data;
+	}
+	void getcData(std::vector<double>&cvec)
+	{
+		cvec = c_data;
+	}
+	double getTimeVar() { return timevar; }
+	int getcTwink() { return cTwink; }
+	int getnTwinks() { return nTwinks; }
 };

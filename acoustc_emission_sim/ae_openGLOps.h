@@ -52,4 +52,10 @@ void drawLine(oglPt p1, oglPt p2, oglClr clr);
 //draws a circle of radius R at coords C with N sides, colour C
 void drawCircle(oglPt p1, double r, int nSides, oglClr clr);
 
+//draws chart from vector
+void drawChart(std::vector<double> &indata);
+
+//calcs distance between 2 points
+double getDist(oglPt p1, oglPt p2);
+
 

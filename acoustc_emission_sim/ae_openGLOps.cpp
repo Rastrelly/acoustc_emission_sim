@@ -65,3 +65,27 @@ void drawCircle(oglPt p1, double r, int nSides, oglClr clr)
 
 	glPopMatrix();
 }
+
+void drawChart(std::vector<double> &indata)
+{
+	if (indata.size() > 0)
+	{
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+
+		
+		glBegin(GL_LINE_STRIP);
+		glColor3f(1.0f,0.0f,0.0f);
+		for (int i = 0; i < indata.size(); i++)
+		{
+			glVertex2d((double)i, indata[i]);
+		}
+		glEnd();
+	}
+}
+
+double getDist(oglPt p1, oglPt p2)
+{
+	return pow(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2), 0.5f);
+}
