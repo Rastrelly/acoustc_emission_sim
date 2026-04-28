@@ -11,6 +11,14 @@ int transmitter_type = TT_ANGLED;
 
 std::mutex lock1;
 
+//simulation setup
+int simSteps = 10000;
+double simStepTime = 0.0001;
+
+//simulation control
+double cSimTime = 0.0f;
+int cSimStep = 0;
+
 std::atomic<bool> quitstate = false; //guarantees proper
                                      //termination of renderer
 std::atomic<bool> runSim = false;
@@ -40,24 +48,18 @@ std::vector<materialprops> matDb = {};
 
 //implementation
 
-//MAIN
-int main(int argc, char **argv)
+//fast transmitter setup
+void setupTransmitter()
 {
-
-	makeMatDb();
-
-	simMgr.setWorldTimerRef(&tmr);
-
-
 	if (transmitter_type == TT_STRAIGHT)
 	{
 		//setup emitter
-		simMgr.mainEmitter->setupEmitter(10000.0f,0.01f,21,50);
+		simMgr.mainEmitter->setupEmitter(1000.0f, 0.005f, 5, 50);
 		simMgr.scrArea = { -10,10,-10,10 };
 
 		//emitter-receiver
 		addSeparator(simMgr.separators, { -2,4 }, { 2,4 }, matDb[1], matDb[1], true, true, false);
-		
+
 		//hull
 		addSeparator(simMgr.separators, { -3,5 }, { 3,5 }, matDb[2], matDb[1], false, false, true);
 		addSeparator(simMgr.separators, { 3,5 }, { 3,0.4 }, matDb[2], matDb[1], false, false, true);
@@ -81,12 +83,12 @@ int main(int argc, char **argv)
 	if (transmitter_type == TT_ANGLED)
 	{
 		//setup emitter
-		simMgr.mainEmitter->setupEmitter(10000.0f, 0.01f, 21, 50);
+		simMgr.mainEmitter->setupEmitter(1000.0f, 0.01f, 5, 50);
 		simMgr.scrArea = { -10,10,-10,10 };
 
 		//emitter-receiver
 		addSeparator(simMgr.separators, { 2,4 }, { 5,1 }, matDb[1], matDb[1], true, true, false);
-		
+
 		//hull
 		addSeparator(simMgr.separators, { -1,5 }, { 5.5,5 }, matDb[2], matDb[1], false, false, true);
 		addSeparator(simMgr.separators, { 5.5,5 }, { 5.5,0.2 }, matDb[2], matDb[1], false, false, true);
@@ -102,12 +104,25 @@ int main(int argc, char **argv)
 		addSeparator(simMgr.separators, { -5,-5 }, { -5,0 }, matDb[2], matDb[3], false, false, true);
 
 		//flaw
-		double xb=-1, yb=-1;
-		addSeparator(simMgr.separators, { xb,yb }, { xb+2,yb-2 }, matDb[3], matDb[2], false, false, false);
-		addSeparator(simMgr.separators, { xb+2,yb-2 }, { xb+2,yb-3 }, matDb[3], matDb[2], false, false, false);
+		double xb = -1, yb = -1;
+		addSeparator(simMgr.separators, { xb,yb }, { xb + 2,yb - 2 }, matDb[3], matDb[2], false, false, false);
+		addSeparator(simMgr.separators, { xb + 2,yb - 2 }, { xb + 2,yb - 3 }, matDb[3], matDb[2], false, false, false);
 		addSeparator(simMgr.separators, { xb + 2,yb - 3 }, { xb,yb - 3 }, matDb[3], matDb[2], false, false, false);
 		addSeparator(simMgr.separators, { xb,yb - 3 }, { xb,yb }, matDb[3], matDb[2], false, false, false);
 	}
+}
+
+//MAIN
+int main(int argc, char **argv)
+{
+
+	makeMatDb();
+	tmr.setFixedStep(true, 0.0001);
+
+	simMgr.setWorldTimerRef(&tmr);
+
+	setupTransmitter();	 //temp func to quick setup
+	//test transmitters
 
 	std::thread thrGlThread(glThread, argc, argv);
 	std::thread thrSimThread(simThread);
@@ -274,6 +289,7 @@ bool handleChoice()
 	{
 		if (!runSim)
 		{
+			cSimStep = 0;
 			runSim = true;
 			std::cout << "+++ SIMULATION STARTED +++\n";
 		}
@@ -302,8 +318,10 @@ void simThread()
 			simMgr.runSimIteration();
 			//simMgr.compactParticles(0.000000000001f);
 			simMgr.garbageCollect();
-			simMgr.mainEmitter->refreshTimeframe(simMgr.getActiveDt());
+			simMgr.mainEmitter->refreshTimeframe(simStepTime);
 			needRefresh = true;
+			cSimStep++;
+			if (cSimStep >= simSteps) runSim = false;
 		}
 		else
 		{

@@ -1,5 +1,11 @@
 #include "ae_openGLOps.h"
 
+bool operator==(const oglPt& p1, const oglPt& p2)
+{
+	if (p1.x == p2.x && p1.y == p2.y) return true;
+	return false;
+}
+
 void prepOrthoArea(oglPt p1, oglPt p2, float wx, float wy)
 {
 	float rp1, rp2;

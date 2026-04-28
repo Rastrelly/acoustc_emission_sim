@@ -5,6 +5,8 @@
 class worldTimer
 {
 private:
+	bool fixedStepMode;
+	double fixedStep;
 	std::chrono::steady_clock::time_point lastUpdate;
 	double deltaTime;
 	double accumTime;
@@ -25,10 +27,24 @@ public:
 		lastUpdate = std::chrono::steady_clock::now(); //init our timestamp
 		deltaTime = 0;
 	}
+	//init fixed step mode
+	void setFixedStep(bool val, double stepAmt)
+	{
+		fixedStepMode = val;
+		fixedStep = stepAmt;
+	}
 	//public call to recalc deltaTime
 	void callDtRecalc()  
 	{
-		calcDeltaTime();
+		if (!fixedStepMode)
+		{
+			calcDeltaTime();
+		}
+		else
+		{
+			deltaTime = fixedStep;
+			accumTime += fixedStep;
+		}
 	}
 
 	//returns the VALUE of deltatime

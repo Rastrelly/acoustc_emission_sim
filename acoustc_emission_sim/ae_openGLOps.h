@@ -42,6 +42,9 @@ struct oglPt
 	double x, y;
 };
 
+//allows to compare points
+bool operator==(const oglPt& p1, const oglPt& p2);
+
 
 void prepOrthoArea(oglPt p1, oglPt p2, float wx, float wy);
 

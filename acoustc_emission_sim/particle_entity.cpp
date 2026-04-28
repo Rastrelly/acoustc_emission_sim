@@ -36,6 +36,8 @@ void aParticle::move()
 
 	setCPos({ getCPos().x + disp.x, getCPos().y + disp.y });	
 
+	if (getCPos() == getPPos()) die();
+
 	if (r_amp <= d_amp) die();
 
 	//if (!dead) std::cout << "t = "<< lifetime <<"; A = " << r_amp << "; exp res = " << pow(2.71828, -0.000016f * lifetime)  << std::endl;
